@@ -1,0 +1,27 @@
+import { inject, Injectable, Service } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Customer } from '../model/customer.model';
+import { environment } from '../../environments/environment';
+@Service()
+export class CustomerService {
+  private http = inject(HttpClient);
+  backendHost: string = 'http://localhost:8085';
+  public getCustomers(): Observable<Array<Customer>> {
+    //console.log(environment.backendHost);
+    return this.http.get<Array<Customer>>(this.backendHost + '/customers');
+  }
+  public searchCustomers(keyword: string): Observable<Array<Customer>> {
+    return this.http.get<Array<Customer>>(
+      this.backendHost + '/customers/search?keyword=' + keyword,
+    );
+  }
+
+  public saveCustomer(customer: Customer): Observable<Customer> {
+    return this.http.post<Customer>(this.backendHost + '/customers', customer);
+  }
+
+  public deleteCustomer(id: number) {
+     return this.http.delete(this.backendHost + '/customers/' + id);
+  }
+}

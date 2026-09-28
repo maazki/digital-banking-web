@@ -1,0 +1,53 @@
+<div class="container">
+
+
+
+   @if (customers){
+    <div class="card" >
+      <div class="card-header">Customers</div>
+      <div class="card-body">
+        @if (searchFormGroup){
+        <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchFormGroup()" >
+          <div class="input-group"></div>
+          <label class="input-group-text">Keyword</label>
+          <input type="text" formControlName="keyword" class="form-control">
+          <button class="btn btn-info">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+        }
+        <table class="table">
+          <thead>
+          <tr>
+            <th>ID</th> <th>Name</th> <th>Email</th><th></th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (customer of customers | async; track customer.id) {
+              <tr>
+                <td>{{customer.id}}</td>
+                <td>{{customer.name}}</td>
+                <td>{{customer.email}}</td>
+                <td><button class="btn btn-danger" (click)="handleDeleteCustomer(customer)">
+                  <i class="bi bi-trash"></i>
+                </button></td>
+              </tr>
+            }
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+   }@else if(errorMessage){
+     <div class="text-danger">  {{errorMessage | json}}</div>
+
+  }@else{
+     <div class="d-flex justify-content-center align-items-center min-vh-100">
+     <div  class="spinner-border text-primary" role="status">
+       <span class="visually-hidden">Loading...</span>
+     </div>
+     </div>
+   }
+
+
+</div>
